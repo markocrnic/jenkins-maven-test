@@ -4,6 +4,6 @@ node{
 	}
 	stage('Compile-Package'){
 		def mvnHome = tool name: 'MVN3', type: 'maven'
-		sh "${mvnHome}/bin/mvn package"
+		sh "${mvnHome}/bin/mvn package -DsocksProxyHost=proxymk.win.vipnet.hr -DsocksProxyPort=8080"
 	}
 }
