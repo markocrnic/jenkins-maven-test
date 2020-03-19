@@ -108,10 +108,13 @@
 		// Copy image to needed project
 		stage('Copy Image to Project'){
         openshift.withCluster(){
+		  def token = openshift.raw("whoami -t")
+		  def DEST_TOKEN = token.out.trim()
+		  def SRC_TOKEN = sh(returnStdout: true, script:"oc whoami -t").trim()
 
           // Copy the image to the registry on the non-prod cluster to the target namespace
 		  // Maybe should add :latest tag
-          // sh "cp docker://docker-registry.default.svc:5000/cicd/${APP_NAME}:latest docker://docker-registry.default.svc:5000/${PROJECT_NAME}/${APP_NAME}:latest"
+          sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:${SRC_TOKEN} --dest-creds openshift:${DEST_TOKEN} docker://docker-registry.default.svc:5000/cicd/${APP_NAME}:latest docker://docker-registry.default.svc:5000/${PROJECT_NAME}/${APP_NAME}:latest"
 		  // sh "oc import-image ${APP_NAME} --from=docker-registry.default.svc:5000/cicd/${APP_NAME}:latest"
 		  
 		  // sh "oc policy add-role-to-user \
