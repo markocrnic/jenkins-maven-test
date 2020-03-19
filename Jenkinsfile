@@ -1,4 +1,4 @@
-{
+
 	node {
 
 		def APP_NAME = 'jenkins-maven-test'
@@ -153,7 +153,6 @@
 		  }
 		}
 	}
-}
 
 
 // Convenience Functions to read variables from the pom.xml
