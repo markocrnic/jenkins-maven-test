@@ -4,6 +4,7 @@ node{
 	}
 	stage('Compile-Package'){
 		def mvnHome = tool name: 'MVN3', type: 'maven'
-		sh "${mvnHome}/bin/mvn package -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true"
+		def mvnCmd = "${mvnHome}/bin/mvn -s maven-settings.xml -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true"
+		sh "${mvnCmd} clean package "
 	}
 }
