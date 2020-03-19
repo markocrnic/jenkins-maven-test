@@ -136,7 +136,7 @@
 				def deploymentExists = deploymentSelector.exists()
 				if (!deploymentExists) {
 				  echo "Deployment ${APP_NAME} does not exist"
-				  openshift.newApp("${PROJECT_NAME}/${APP_NAME}:0.0.0", "--name=${APP_NAME}", "--allow-missing-imagestream-tags=true","--namespace=${PROJECT_NAME}")
+				  openshift.newApp("${APP_NAME}:latest", "--name=${APP_NAME}", "--allow-missing-imagestream-tags=true","--namespace=${PROJECT_NAME}")
 				}
 				echo "Deployment ${APP_NAME} exists"
 
