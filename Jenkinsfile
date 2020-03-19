@@ -108,9 +108,6 @@
 		// Copy image to needed project
 		stage('Copy Image to Project'){
         openshift.withCluster(){
-          def token = openshift.raw("whoami -t")
-          def DEST_TOKEN = token.out.trim()
-          def SRC_TOKEN = sh(returnStdout: true, script:"oc whoami -t").trim()
 
           // Copy the image to the registry on the non-prod cluster to the target namespace
 		  // Maybe should add :latest tag
