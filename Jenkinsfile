@@ -100,7 +100,7 @@
 			echo "Building OpenShift container image ${APP_NAME}"
 
 			// Start Binary Build in OpenShift CICD project using the file we just published
-			sh "oc start-build ${APP_NAME} --follow --from-file=target/${artifactId}-${pomVersion}.jar -n cicd"
+			sh "oc start-build ${APP_NAME} --follow --from-file=target/${APP_NAME}-0.0.1-SNAPSHOT.jar -n cicd"
 			echo "oc start build complete."
 		
 		}
@@ -114,7 +114,7 @@
 
           // Copy the image to the registry on the non-prod cluster to the target namespace
 		  // Maybe should add :latest tag
-          sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://docker-registry.default.svc:5000/cicd/${APP_NAME} docker://docker-registry.default.svc:5000/${PROJECT_NAME}/${APP_NAME}"
+          sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false docker://docker-registry.default.svc:5000/cicd/${APP_NAME}:latest docker://docker-registry.default.svc:5000/${PROJECT_NAME}/${APP_NAME}:latest"
         }
 		
 		// Deploy the built image.
