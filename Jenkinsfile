@@ -120,6 +120,13 @@
 		  // sh "oc policy add-role-to-user \
 		  //		system:image-puller system:serviceaccount:${PROJECT_NAME}:default \
 		  //		--namespace=cicd"
+		  def IMAGE_ID = sh (
+				returnStdout: true,
+				script: "docker tag ${APP_NAME} 172.30.31.29:5000/${PROJECT_NAME}/${APP_NAME}").trim()
+		  
+		  sh "docker login -p ${IMAGE_ID} -e unused -u unused 172.30.31.29:5000"
+		  sh "docker push 172.30.31.29:5000/${PROJECT_NAME}/${APP_NAME}"
+		  
 		}
 		
 		// Deploy the built image.
@@ -137,7 +144,7 @@
 				if (!deploymentExists) {
 				  echo "Deployment ${APP_NAME} does not exist"
 				  // openshift.newApp("${APP_NAME}:latest", "--name=${APP_NAME}", "--allow-missing-imagestream-tags=true","--namespace=${PROJECT_NAME}")
-				  sh "oc new-app docker://docker-registry.default.svc:5000/cicd/${APP_NAME}:latest --name=${APP_NAME} --namespace=${PROJECT_NAME} --allow-missing-imagestream-tags=true"
+				  sh "oc new-app ${APP_NAME} --name=${APP_NAME} --namespace=${PROJECT_NAME} --allow-missing-imagestream-tags=true"
 				}
 				echo "Deployment ${APP_NAME} exists"
 
